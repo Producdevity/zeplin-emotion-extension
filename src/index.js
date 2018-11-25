@@ -2,24 +2,20 @@
  * Export functions you want to work with, see documentation for details:
  * https://github.com/zeplin/zeplin-extension-documentation
  */
-
-function layer(context, selectedLayer) {}
-
-function styleguideColors(context, colors) {}
-
-function styleguideTextStyles(context, textStyles) {}
+import comment from './comment'
+import layer from './layer'
+import styleguideColors from './styleguideColors'
+import styleguideTextStyles from './styleguideTextStyles'
 
 function exportStyleguideColors(context, colors) {}
 
 function exportStyleguideTextStyles(context, textStyles) {}
 
-function comment(context, text) {}
-
 export default {
+    comment,
     layer,
     styleguideColors,
     styleguideTextStyles,
     exportStyleguideColors,
     exportStyleguideTextStyles,
-    comment,
 }
