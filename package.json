@@ -3,16 +3,11 @@
     "version": "0.1.0",
     "description": "Zeplin Emotion Extension",
     "license": "MIT",
-    "author": {
-        "name": "Yassine Gherbi",
-        "email": "y.gherbi.dev@gmail.com"
-    },
+    "author": {"name": "Yassine Gherbi", "email": "y.gherbi.dev@gmail.com"},
     "keywords": ["zeplin", "extension", "emotion", "react", "react-emotion"],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/DaZzz/zeplin-styled-components-extension"
-    },
     "homepage": "https://github.com/DaZzz/zeplin-styled-components-extension",
+    "bugs": "https://github.com/YassineGherbi/zeplin-emotion-extension/issues",
+    "repository": "github:YassineGherbi/zeplin-emotion-extension",
     "scripts": {
         "start": "zem start",
         "build": "zem build",
@@ -20,14 +15,15 @@
         "exec": "zem exec",
         "publish": "zem publish"
     },
-    "zeplin": {
-        "displayName": "emotion",
-        "projectTypes": ["web"]
-    },
     "dependencies": {
-        "zem": "^0.3.3"
+        "zem": "^0.3.3",
+        "zeplin-extension-style-kit": "^1.0.0"
     },
     "devDependencies": {
         "prettier": "^1.15.2"
+    },
+    "zeplin": {
+        "displayName": "emotion",
+        "projectTypes": ["web"]
     }
 }
