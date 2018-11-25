@@ -1,0 +1,25 @@
+{
+    "bracketSpacing": false,
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "overrides": [
+        {
+            "files": [
+                "*.json",
+                ".babelrc",
+                ".huskyrc",
+                ".lintstagedrc",
+                ".prettierrc",
+                ".eslintrc"
+            ],
+            "options": {"parser": "json"}
+        },
+        {
+            "files": ["*.md"],
+            "options": {"parser": "markdown"}
+        }
+    ]
+}
