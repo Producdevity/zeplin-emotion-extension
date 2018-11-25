@@ -1,8 +1,18 @@
 {
     "name": "emotion",
     "version": "0.1.0",
-    "description": "Sample extension description.",
+    "description": "Zeplin Emotion Extension",
     "license": "MIT",
+    "author": {
+        "name": "Yassine Gherbi",
+        "email": "y.gherbi.dev@gmail.com"
+    },
+    "keywords": ["zeplin", "extension", "emotion", "react", "react-emotion"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DaZzz/zeplin-styled-components-extension"
+    },
+    "homepage": "https://github.com/DaZzz/zeplin-styled-components-extension",
     "scripts": {
         "start": "zem start",
         "build": "zem build",
