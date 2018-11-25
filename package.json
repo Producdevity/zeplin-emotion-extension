@@ -23,7 +23,7 @@
         "prettier": "^1.15.2"
     },
     "zeplin": {
-        "displayName": "emotion",
+        "displayName": "Emotion (CSS in JS)",
         "projectTypes": ["web"]
     }
 }

@@ -1,11 +1,12 @@
 import Layer from 'zeplin-extension-style-kit/elements/layer'
-import TextStyle from 'zeplin-extension-style-kit/elements/textStyle'
 import Color from 'zeplin-extension-style-kit/values/color'
+import TextStyle from 'zeplin-extension-style-kit/elements/textStyle'
 import {getUniqueLayerTextStyles} from 'zeplin-extension-style-kit/utils'
+import indent from './utils/indent'
 
 function getVariableMap(projectColors) {
     return projectColors.reduce((variableMap, color) => {
-        variableMap[new Color(color).valueOf()] = '${Colors.' + color.name + '}'
+        variableMap[new Color(color).valueOf()] = `$\{colors.${color.name}}`
         return variableMap
     }, {})
 }
@@ -26,40 +27,41 @@ function filterDeclarations(declarations, textStyleMatch) {
     })
 }
 
-function joinRules(rules) {
-    return 'export const Box = styled.div`\n' + rules.join('\n') + '\n`'
-}
+const generateCode = rules => `
+const Box = styled('div')\`
+${rules.map(indent()).join('\n')}
+\``
 
 function declarationsToString(declarations, variableMap, textStyleMatch) {
     const filteredDeclarations = filterDeclarations(declarations, textStyleMatch)
-    const textStyleMixins = textStyleMatch ? ['  ${Typography.' + textStyleMatch.name + '};'] : []
+    const textStyleMixins = textStyleMatch ? ['  ${typography.' + textStyleMatch.name + '};'] : []
     const rules = [
         ...textStyleMixins,
         ...filteredDeclarations.map(
-            d => `  ${d.name}: ${d.getValue({densityDivisor: 1}, variableMap)};`,
+            d => `${d.name}: ${d.getValue({densityDivisor: 1}, variableMap)};`,
         ),
     ]
 
-    return joinRules(rules)
+    return generateCode(rules)
 }
 
 function layer(context, selectedLayer) {
-    const l = new Layer(selectedLayer)
-    const layerRuleSet = l.style
-    const {defaultTextStyle} = selectedLayer
-    const isText = selectedLayer.type === 'text' && defaultTextStyle
-    const textStyleMatch = isText ? context.project.findTextStyleEqual(defaultTextStyle) : undefined
+    const layer = new Layer(selectedLayer)
+    const {defaultTextStyle, type} = selectedLayer
+
+    const isText = type === 'text' && defaultTextStyle
+
+    const textStyleMatch = isText ? context.project.findTextStyleEqual(defaultTextStyle) : null
 
     if (isText) {
-        const declarations = l.getLayerTextStyleDeclarations(defaultTextStyle)
-        declarations.forEach(p => layerRuleSet.addDeclaration(p))
+        layer.getLayerTextStyleDeclarations(defaultTextStyle).forEach(layer.style.addDeclaration)
     }
 
     const variableMap = getVariableMap(context.project.colors)
-    const code = declarationsToString(layerRuleSet.declarations, variableMap, textStyleMatch)
+    const code = declarationsToString(layer.style.declarations, variableMap, textStyleMatch)
 
     return {
-        code: code,
+        code,
         language: 'js',
     }
 }

@@ -1,32 +1,36 @@
 import TextStyle from 'zeplin-extension-style-kit/elements/textStyle'
+import indent from './utils/indent'
 
 const filterDeclarations = declarations =>
-    declarations.filter(d => !(d.hasDefaultValue && d.hasDefaultValue()))
+    declarations.filter(
+        declaration => !(declaration.hasDefaultValue && declaration.hasDefaultValue()),
+    )
 
 function declarationsToString(name, declarations) {
     const rules = filterDeclarations(declarations).map(
-        d => `    ${d.name}: ${d.getValue({densityDivisor: 1}, {})};`,
+        declaration => `${declaration.name}: ${declaration.getValue({densityDivisor: 1}, {})};`,
     )
 
-    return '  ' + name + ': css`\n' + rules.join('\n') + '\n  `'
+    return `
+  ${name}: css\`
+${rules.map(indent()).join('\n')}
+  \``
 }
 
-function joinRules(rules) {
-    return (
-        "import { css } from 'styled-components'\n\nexport default {\n" +
-        rules.join(',\n\n') +
-        '\n}'
-    )
+const generateCode = rules => `
+import {css} from 'emotion'
+
+export default {${rules.join(',\n\n')}
 }
+`
 
 function styleguideTextStyles(context, textStyles) {
-    const textStyleRules = textStyles.map(textStyle => {
-        const {style} = new TextStyle(textStyle)
-        return declarationsToString(textStyle.name, style.declarations)
-    })
+    const textStyleRules = textStyles.map(textStyle =>
+        declarationsToString(textStyle.name, new TextStyle(textStyle).style.declarations),
+    )
 
     return {
-        code: joinRules(textStyleRules),
+        code: generateCode(textStyleRules),
         language: 'js',
     }
 }

@@ -1,18 +1,18 @@
 import Color from 'zeplin-extension-style-kit/values/color'
+import indent from './utils/indent'
 
-function joinRules(rules) {
-    return 'export default {\n' + rules.join(',\n') + '\n}'
-}
+const generateCode = rules => `
+export default {
+${rules.map(indent()).join(',\n')}
+}`
+
+const getHexValue = color => new Color(color).toStyleValue({colorFormat: 'hex'})
 
 function styleguideColors(context, colors) {
-    const colorRules = colors.map(color => {
-        const colorValue = new Color(color).toStyleValue({colorFormat: 'hex'})
-
-        return `  ${color.name}: '${colorValue}'`
-    })
+    const colorRules = colors.map(color => `${color.name}: '${getHexValue(color)}'`)
 
     return {
-        code: joinRules(colorRules),
+        code: generateCode(colorRules),
         language: 'js',
     }
 }
